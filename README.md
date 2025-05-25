@@ -76,10 +76,10 @@ spring.jpa.hibernate.ddl-auto=update
 
 
 📬 API Endpoints
-Method	Endpoint	Description	Auth Required
-POST	/api/auth/login	Login and receive JWT	❌ No
-POST	/api/auth/register	Register new user	❌ No
-GET	/api/user/profile	Get user profile	✅ Yes
-GET	/api/user/admin	Access admin-only endpoint	✅ Yes (ADMIN)
+Method	Endpoint	          Description	                Auth Required
+POST	  /api/auth/login	    Login and receive JWT	      ❌ No
+POST	  /api/auth/register	Register new user	          ❌ No
+GET	    /api/user/profile	  Get user profile	          ✅ Yes
+GET	    /api/user/admin	    Access admin-only endpoint	✅ Yes (ADMIN)
 
 🔑 Use JWT in the request header as Authorization: Bearer <token>
