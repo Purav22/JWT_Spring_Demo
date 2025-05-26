@@ -11,15 +11,19 @@ import com.security.securitydemo.entity.User;
 import com.security.securitydemo.jwtconfig.JwtUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -53,9 +57,22 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req) {
-    	 Authentication authentication = authManager.authenticate(
-                 new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
-         );
+
+    	 Authentication authentication;
+
+         try{
+
+
+             authentication= authManager.authenticate(
+                     new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
+
+         }catch (AuthenticationException e) {
+
+             Map<String, Object> map = new HashMap<>();
+             map.put("message", "Bad credentials");
+             map.put("status", false);
+             return new ResponseEntity<Object>(map, HttpStatus.NOT_FOUND);
+         }
 
          SecurityContextHolder.getContext().setAuthentication(authentication);
          UserDetails userDetails = (UserDetails) authentication.getPrincipal();

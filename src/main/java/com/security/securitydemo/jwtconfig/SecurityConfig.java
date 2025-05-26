@@ -23,6 +23,9 @@ public class SecurityConfig {
     private JwtAuthenticationFilter jwtFilter;
 
     @Autowired
+    private AuthEntryPointJwt authEntryPointJwt;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Bean
@@ -43,6 +46,7 @@ public class SecurityConfig {
                 .userDetailsService(userDetailsService)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
